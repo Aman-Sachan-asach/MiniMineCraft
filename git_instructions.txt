@@ -1,0 +1,22 @@
+Whenever you're starting work do the following:
+
+NOTE: IF YOU EVER PUSH TO MASTER, MESSAGE THE GROUP
+
+Step 1: whichever branch you're working in (better not be master!), first PULL FROM MASTER
+	- "git pull origin master"
+	- if the merge conflicts window pops up in terminal, just press "shift + colon", "q", then press enter
+
+Step 2: you may run into merge conflicts if files that you have edited were also edited on master. (https://l.facebook.com/l.php?u=https%3A%2F%2Fconfluence.atlassian.com%2Fbitbucket%2Fresolve-merge-conflicts-704414003.html&h=XAQHHgmGZ)
+
+
+Step 3: when you're done making changes on your branch and want to merge to master:
+
+	- "git add ."
+	- "git commit -m "<insert message here>" "
+	- "git push origin <your branch name here>"
+	- "git checkout master"
+	- "git merge <your branch name here"
+	- "git push origin master"
+
+
+
