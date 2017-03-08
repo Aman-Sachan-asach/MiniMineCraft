@@ -31,6 +31,11 @@ int Drawable::elemCount()
     return count;
 }
 
+//functions with General in their name are used for things like weather,
+//i.e things that aren't standard blocks that make up the minecraft world
+
+//the funvtions that don't have General in their name are used to deal
+//with actual blocks in the minecraft world
 void Drawable::generateGeneralVBOs(int IndexVBO_size)
 {
     General_VBOBound = true;

@@ -369,7 +369,6 @@ void ShaderProgram::setGeometryColor(glm::vec4 color)
     }
 }
 
-//This function, as its name implies, uses the passed in GL widget
 void ShaderProgram::draw(Drawable &d)
 {
         useMe();
