@@ -9,7 +9,7 @@ void compass::create()
     glm::vec4 pos[4];
     glm::vec4 col[4];
 
-    // set idx
+    // set index
     for(int i = 0; i < 4; i++)
     {
         idx[i] = i;

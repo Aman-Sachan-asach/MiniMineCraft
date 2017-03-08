@@ -9,7 +9,6 @@ INPUT(
 ./release\drawable.o
 ./release\camera.o
 ./release\cameracontrolshelp.o
-./release\cube.o
 ./release\scene.o
 ./release\transform.o
 ./release\crosshair.o
@@ -18,9 +17,7 @@ INPUT(
 ./release\player.o
 ./release\compass.o
 ./release\behaviors.o
-./release\skybox.o
 ./release\weather.o
-./release\chunk.o
 ./release\qrc_glsl.o
 ./release\moc_mainwindow.o
 ./release\moc_glwidget277.o

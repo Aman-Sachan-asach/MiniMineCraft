@@ -8,9 +8,8 @@
 #include "camera.h"
 #include "scene/blocklist.h"
 
-/*
- * Ray-Cube Intersection
- */
+
+//Ray-Cube Intersection
 
 class Ray
 {
@@ -38,10 +37,6 @@ public:
     // Functions
     bool RayMarch(BlockList &blocklist, std::tuple<int, int, int> &block);
     bool RayMarchAdd(BlockList &blocklist, std::tuple<int, int, int> &block);
-    bool Collides(BlockList &blocklist);
 };
-
-
-
 
 #endif // RAY_H

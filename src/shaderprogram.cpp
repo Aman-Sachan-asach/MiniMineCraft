@@ -92,15 +92,7 @@ void ShaderProgram::create(const char *vertfile, const char *fragfile)
     unifRainSampler = context->glGetUniformLocation(prog, "RainSampler");
 }
 
-void ShaderProgram::setActiveTexture()
-{
-    context->glActiveTexture(GL_TEXTURE0);
-    context->glBindTexture(GL_TEXTURE_2D, textureHandle);
-
-    context->glUseProgram(prog);
-    context->glUniform1i(unifTextureSampler, 0);
-}
-
+//Texture_general functions are for things like the billboards used for weather
 void ShaderProgram::setActiveTexture_General(int tex_slot_num)
 {
     switch(tex_slot_num)
@@ -178,6 +170,16 @@ void ShaderProgram::setupTexture_General(const char* imagepath, int& width, int&
             context->glUniform1i(unifRainSampler, 3);
             break;
     }
+}
+
+//specific texture functions for any thing that has to do with actual blocks that make up the minecraft world
+void ShaderProgram::setActiveTexture()
+{
+    context->glActiveTexture(GL_TEXTURE0);
+    context->glBindTexture(GL_TEXTURE_2D, textureHandle);
+
+    context->glUseProgram(prog);
+    context->glUniform1i(unifTextureSampler, 0);
 }
 
 void ShaderProgram::setupTexture(const char* imagepath, int& width, int& height)
@@ -458,111 +460,6 @@ void ShaderProgram::DrawWeather(Drawable &d)
         context->glDisableVertexAttribArray(attrUVs);
     }
     if(attranimatetexture_flag != -1)
-    {
-        context->glDisableVertexAttribArray(attranimatetexture_flag);
-    }
-
-    context->printGLErrorLog();
-}
-
-void ShaderProgram::DrawChunk(Drawable &d)
-{
-    useMe();
-    d.BindChunkVBO();
-    d.BindChunkVBOIndex();
-
-    int stride = sizeof(Vertex_Data);
-    if (attrPos != -1)
-    {
-        context->glEnableVertexAttribArray(attrPos);
-        context->glVertexAttribPointer(attrPos, 4, GL_FLOAT, GL_FALSE, stride, (void*)0);
-        context->printGLErrorLog();
-    }
-    if (attrCol != -1)
-    {
-        context->glEnableVertexAttribArray(attrCol);
-        context->glVertexAttribPointer(attrCol, 4, GL_FLOAT, GL_FALSE, stride, (void*)(sizeof(glm::vec4)));
-
-        context->printGLErrorLog();
-    }
-    if (attrNor != -1)
-    {
-        context->glEnableVertexAttribArray(attrNor);
-        context->glVertexAttribPointer(attrNor, 4, GL_FLOAT, GL_FALSE, stride, (void*)(2*sizeof(glm::vec4)));
-        context->printGLErrorLog();
-    }
-    if (attrUVs != -1)
-    {
-        context->glEnableVertexAttribArray(attrUVs);
-        context->glVertexAttribPointer(attrUVs, 2, GL_FLOAT, GL_FALSE,stride, (void*)(3*sizeof(glm::vec4)));
-        context->printGLErrorLog();
-    }
-    if (attrtangent != -1)
-    {
-        int size = 3*sizeof(glm::vec4) + sizeof(glm::vec2);
-        context->glEnableVertexAttribArray(attrtangent);
-        context->glVertexAttribPointer(attrtangent, 4, GL_FLOAT, GL_FALSE, stride, (void*)(size));
-
-        context->printGLErrorLog();
-    }
-    if (attrbitangent != -1)
-    {
-        int size = 3*sizeof(glm::vec4) + sizeof(glm::vec2) + sizeof(glm::vec4);
-        context->glEnableVertexAttribArray(attrbitangent);
-        context->glVertexAttribPointer(attrbitangent, 4, GL_FLOAT, GL_FALSE, stride, (void*)(size));
-
-        context->printGLErrorLog();
-    }
-    if (attrshininess != -1)
-    {
-        int size = 3*sizeof(glm::vec4) + sizeof(glm::vec2) + 2*sizeof(glm::vec4);
-        context->glEnableVertexAttribArray(attrshininess);
-        context->glVertexAttribPointer(attrshininess, 1, GL_FLOAT, GL_FALSE, stride, (void*)(size));
-
-        context->printGLErrorLog();
-    }
-    if (attranimatetexture_flag != -1)
-    {
-        int size = 3*sizeof(glm::vec4) + sizeof(glm::vec2) + 2*sizeof(glm::vec4) + sizeof(float);
-        context->glEnableVertexAttribArray(attranimatetexture_flag);
-        context->glVertexAttribIPointer(attranimatetexture_flag, 1, GL_INT, stride, (void*)(size));
-
-        context->printGLErrorLog();
-    }
-
-    d.BindChunkVBO();
-    d.BindChunkVBOIndex();
-    context->glDrawElements(d.drawMode(), d.elemCount(), GL_UNSIGNED_INT, 0);
-
-    if (attrPos != -1)
-    {
-        context->glDisableVertexAttribArray(attrPos);
-    }
-    if (attrNor != -1)
-    {
-        context->glDisableVertexAttribArray(attrNor);
-    }
-    if (attrCol != -1)
-    {
-        context->glDisableVertexAttribArray(attrCol);
-    }
-    if (attrUVs != -1)
-    {
-         context->glDisableVertexAttribArray(attrUVs);
-    }
-    if (attrtangent != -1)
-    {
-         context->glDisableVertexAttribArray(attrtangent);
-    }
-    if (attrbitangent != -1)
-    {
-         context->glDisableVertexAttribArray(attrbitangent);
-    }
-    if (attrshininess != -1)
-    {
-         context->glDisableVertexAttribArray(attrshininess);
-    }
-    if (attranimatetexture_flag != -1)
     {
         context->glDisableVertexAttribArray(attranimatetexture_flag);
     }

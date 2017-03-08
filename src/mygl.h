@@ -4,11 +4,9 @@
 #include <utils.h>
 #include <shaderprogram.h>
 
-#include <scene/cube.h>
 #include "camera.h"
 #include <scene/scene.h>
 #include <scene/blocklist.h>
-#include <scene/chunk.h>
 #include <scene/crosshair.h>
 #include "ray.h"
 #include "scene/player.h"

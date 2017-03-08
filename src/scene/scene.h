@@ -4,10 +4,6 @@
 
 #include "blocklist.h"
 
-//#include "mygl.h"
-
-//class MyGL;
-
 class Scene
 {
 public:
@@ -20,14 +16,7 @@ public:
 
 
     //---------------------------------------- PERLIN NOISE TERRAIN GENERATION ---------------------------------------
-    //BlockList blockslist;                   //to get the map and block type
-    //BlockList* blockslist;
-    //MyGL* mygl;
-
-
-    //void createPerlinNoiseScene(BlockList* blocklist);          //to iterate through the map
     static float perlinNoise2D(float x, float y);   //to calculate the z value
-    void perlinWorm();
     std::vector<glm::vec3> makeEllipse(glm::vec3 center, float thickness, float width, float height);
     std::vector<glm::vec3> makeSphere(glm::vec3 center, float radius);
 };

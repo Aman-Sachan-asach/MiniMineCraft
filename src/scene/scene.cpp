@@ -1,11 +1,10 @@
 #include <scene/scene.h>
 
-#include <scene/cube.h>
 #include <iostream>
 #define M_PI 3.1415
 
 
-Scene::Scene() : dimensions(64, 64, 64)//, mygl(nullptr)//blockslist(nullptr)
+Scene::Scene() : dimensions(64, 64, 64)
 {}
 
 void Scene::CreateTestScene()
@@ -19,12 +18,9 @@ void Scene::CreateTestScene()
             for(int z = 0; z < dimensions.z; z++)
             {
                 float perlin_z = std::abs(perlinNoise2D(x, z));
-                if(y <= perlin_z)//== dimensions.y/2)//
+                if(y <= perlin_z)
                 {
-                    //prog_tex.useMe();
-                    //glActiveTexture((GL_TEXTURE0);
                     Zs.push_back(true);
-
                 }
                 else
                 {
@@ -75,49 +71,6 @@ void Scene::CreateTestScene()
 
 */
 
-/*
-//void Scene::createPerlinNoiseScene(BlockList* blocklist)
-//{
-//    //iterate through the map and create tuple position values with:
-//    //x until dimensions.x
-//    //y until dimensions.y
-//    //z with the value generated from Perlin Noise equation
-//    //for now instantiate z value to be 0.0f
-
-//    float x_offset = 0.0f;
-//    float y_offset = 0.0f;
-//    //blockslist = new BlockList();
-
-//    for(int x = 0; x < dimensions.x; x++)
-//    {
-//        for(int y = 0; y < dimensions.y; y++)
-//        {
-//            //for(int z = 0; z < dimensions.z; z++)
-//            //{
-//                float perlin_z = std::abs(perlinNoise2D(x_offset, y_offset));
-
-
-//                //FILL THE BLOCKLIST CLASS MAP
-//                //std::map<std::tuple<float, float, float>, int> block_map = blockslist->getBlockmap();
-
-//                //insert the x, y, and z values into the tuple part of the block_map
-//                //we'll just make block_type be all grass for now (aka index 0)
-
-//                //block_map.insert(std::pair<std::tuple<float, float, float>, int> (std::tuple<float, float, float>(x, y, perlin_z), 0));
-//                for (int i = 0; i < perlin_z; ++i) {
-//                    //blockslist.AddBlock(std::tuple<float, float, float>(x, y, i), 0);
-//                    //blockslist->AddBlock(std::tuple<float, float, float>(x, y, i), 0);
-//                    //mygl->BL.AddBlock(std::tuple<float, float, float>(x, y, i), 0);
-//                    blocklist->AddBlock(std::tuple<float, float, float>(x, y, i), 0);
-//                }
-//            //}
-//            y_offset += .25;
-//        }
-//        x_offset += .25;
-//    }
-//}
-*/
-
 float randomNoise(float x, float y);    //this should return a value from 0 - 1
 float interpolatedNoise(float x, float y);
 float smoothedNoise(float x, float y);
@@ -140,12 +93,8 @@ float Scene::perlinNoise2D(float x, float y)//, int divide_freq_by, int height_f
         frequency = std::pow(2, i);        //increasing the frequency coefficient will create more white pixels
         amplitude = std::pow(persistence, i) * 2.0f; //don't multiply persistence here
 
-        //z = z + randomNoise(x * frequency, y * frequency) * amplitude;
-
         z = z + interpolatedNoise(x * frequency, y * frequency) * amplitude;    //divide_freq_by here
     }
-
-    //std::cout << "Z Value:" << z-1 << std::endl;
 
     float result = z - 1;
     if (result > 1.0f)
@@ -254,11 +203,3 @@ std::vector<glm::vec3> Scene::makeEllipse(glm::vec3 center, float thickness, flo
 
     return ellipse_pts;
 }//end makeEllipse
-
-
-//---------------------------------------- PERLIN WORM CAVE GENERATION ---------------------------------------
-void Scene::perlinWorm()
-{
-    //map output of noise [0, 1] to direction [0, 360]
-    //every step along the cave, turn in a direction determined by noise at current position
-}

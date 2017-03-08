@@ -9,7 +9,6 @@ INPUT(
 ./debug\drawable.o
 ./debug\camera.o
 ./debug\cameracontrolshelp.o
-./debug\cube.o
 ./debug\scene.o
 ./debug\transform.o
 ./debug\crosshair.o
@@ -18,9 +17,7 @@ INPUT(
 ./debug\player.o
 ./debug\compass.o
 ./debug\behaviors.o
-./debug\skybox.o
 ./debug\weather.o
-./debug\chunk.o
 ./debug\qrc_glsl.o
 ./debug\moc_mainwindow.o
 ./debug\moc_glwidget277.o

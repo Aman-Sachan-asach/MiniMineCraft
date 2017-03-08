@@ -18,13 +18,12 @@ void Crosshair::create()
     glm::vec4 pos[CROSSHAIR_VERT_COUNT];
     glm::vec4 col[CROSSHAIR_VERT_COUNT];
 
-    // set idx
+    // set index
     for(int i = 0; i < 4; i++) {
         idx[i] = i;
     }
 
     // set pos
-    // might be too small
     pos[0] = glm::vec4(w/2 - .05, h/2, 0.0f, 1.0f);     // left point
     pos[1] = glm::vec4(w/2 + .05, h/2, 0.0f, 1.0f);     // right point
     pos[2] = glm::vec4(w/2, h/2 + .05, 0.0f, 1.0f);     // top point

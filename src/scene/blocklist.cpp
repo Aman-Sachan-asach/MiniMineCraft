@@ -14,20 +14,13 @@ BlockList::BlockList(GLWidget277* context)
       BlockMap(), ChunkMap(),
       WorldBoundary()
 {
+    //Initial World size
      WorldBoundary.push_back(-32.0f);
      WorldBoundary.push_back(64.0f);
      WorldBoundary.push_back(-32.0f);
      WorldBoundary.push_back(64.0f);
      WorldBoundary.push_back(-32.0f);
      WorldBoundary.push_back(64.0f);
-     /*
-     WorldBoundary.push_back(-50.0f);
-     WorldBoundary.push_back(100.0f);
-     WorldBoundary.push_back(-10.0f);
-     WorldBoundary.push_back(60.0f);
-     WorldBoundary.push_back(-50.0f);
-     WorldBoundary.push_back(100.0f);
-     */
 }
 
 void BlockList::create()
@@ -56,7 +49,7 @@ void BlockList::createInitialWorld()
     }
 }
 
-//Populates the block map
+//populates the blockmap, hash map for all blocks, for the inital world size
 glm::vec2 BlockList::CreateInitialBlockMap() // 64x64xheight blocks
 {
     glm::vec2 y_bounds;
@@ -76,6 +69,7 @@ glm::vec2 BlockList::CreateInitialBlockMap() // 64x64xheight blocks
     return y_bounds;
 }
 
+//populates the blockmap, as and when new terrain is explored by the player
 glm::vec2 BlockList::CreateMoreBlocks(int min_x, int max_x, int min_z, int max_z)
 {
     glm::vec2 y_chunk_bounds;
@@ -90,7 +84,6 @@ glm::vec2 BlockList::CreateMoreBlocks(int min_x, int max_x, int min_z, int max_z
                 AddBlock(std::tuple<int, int, int>(i, m, k), DIRT);
             }
             y_chunk_bounds = glm::vec2(0, perlin_value);
-
         }
     }
     return y_chunk_bounds;
@@ -98,6 +91,8 @@ glm::vec2 BlockList::CreateMoreBlocks(int min_x, int max_x, int min_z, int max_z
 
 void BlockList::CreateClouds(int max_x, int max_z)
 {
+    //randomized cloud placement
+    //all clouds are ellipsoids
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     srand (seed);
 
@@ -107,16 +102,20 @@ void BlockList::CreateClouds(int max_x, int max_z)
         {
             float a = rand() % 200 - 100;
             float c = rand() % 200 - 100;
+            //max_x, max_z, a, c determine the number and distribution of clouds over the
+            //minecraft world
 
             glm::vec3 center = glm::vec3(a,31,c);
-            float t = rand() % 2 + 4.0f;;
+            float t = rand() % 2 + 4.0f;
             float w = rand() % 2 + 6.0f;
             float h = rand() % 2 + 9.0f;
 
+            //make a list of all the points in the ellipsoid formed
             std::vector<glm::vec3> points_ellipse = scene->makeEllipse(center, t, w, h);
 
             for(glm::vec3 point : points_ellipse)
             {
+                //add a block for every point in the list points_ellipse
                 AddBlock(std::tuple<float, float, float>(point.x, point.y, point.z), CLOUD);
             }
         }
@@ -125,6 +124,7 @@ void BlockList::CreateClouds(int max_x, int max_z)
 
 int BlockList::BlockTypeDetermination(int height)
 {
+    //simple height based scheme to determine block type
     if(height <= -16)
     {
         return STONE;
@@ -137,12 +137,13 @@ int BlockList::BlockTypeDetermination(int height)
 
 glm::vec2 BlockList::UVforFace(int block_type, char face)
 {
+    //determine which texture to use from the texture atlas, i.e detemine
+    //the uv co-ordinates to be sampled
     glm::vec2 uv;// = uv_GRASStop;
 
     switch(block_type)
     {
         case WATER:
-            //for right now it's just one texture instead of an animated thing
             uv = uv_WATER1;
             return uv;
             break;
@@ -164,7 +165,6 @@ glm::vec2 BlockList::UVforFace(int block_type, char face)
             }
             break;
         case LAVA:
-            //for right now it's just one texture instead of an animated thing
             uv = uv_LAVA1;
             return uv;
             break;
@@ -218,7 +218,7 @@ glm::vec2 BlockList::UVforFace(int block_type, char face)
             return uv;
             break;
         default:
-            uv = uv_CRYSTAL; //so you'll know if something went wrong
+            uv = uv_CRYSTAL;
             return uv;
             break;
     }
@@ -228,6 +228,7 @@ glm::vec2 BlockList::UVforFace(int block_type, char face)
 
 bool BlockList::CreateChunkVBOs(int chunkX, int chunkY, int chunkZ)
 {
+    //create VBO's for a chunk
     VertexList.clear();
     IndexList.clear();
     UVList.clear();
@@ -242,11 +243,13 @@ bool BlockList::CreateChunkVBOs(int chunkX, int chunkY, int chunkZ)
     int ye = 16*(chunkY);
     int ze = 16*(chunkZ);
 
+    //the flag just checks if any blocks in that chunk exist and only if they do, create a VBO
     flag = OriginalChunkCreationHelper(xb, xe, yb, ye, zb, ze);
 
     //pass things into vbos
     if(flag)
     {
+        //give the chunk a id and put it in the has map so it can be found later
         std::tuple<int, int, int> temp (chunkX, chunkY, chunkZ);
         AddChunk(temp);
 
@@ -272,6 +275,9 @@ bool BlockList::CreateChunkVBOs(int chunkX, int chunkY, int chunkZ)
 
 bool BlockList::ReCreateVBOChunk(int chunkX, int chunkY, int chunkZ)
 {
+    //This function is similar to CreateChunkVBOs except that it is
+    //called if a block is addded or deleted from a existing chunk
+    //it can operate on existing VBOs
     VertexList.clear();
     IndexList.clear();
     UVList.clear();
@@ -286,6 +292,7 @@ bool BlockList::ReCreateVBOChunk(int chunkX, int chunkY, int chunkZ)
     int ye = 16*(chunkY);
     int ze = 16*(chunkZ);
 
+    //the flag just checks if any blocks in that chunk exist and only if they do, create a VBO
     flag = RecreatingChunkHelper(xb, xe, yb, ye, zb, ze);
 
     //pass things into vbos
@@ -302,7 +309,7 @@ bool BlockList::ReCreateVBOChunk(int chunkX, int chunkY, int chunkZ)
         }
         else
         {
-            //AddChunk(temp);
+            //chunk exists so modify it
             index = getChunkID(temp);
             RegenerateNewVBO(index);
             RegenerateNewVBOIndex(index);
@@ -333,11 +340,11 @@ bool BlockList::ReCreateVBOChunk(int chunkX, int chunkY, int chunkZ)
 
 int BlockList::BlockShininess(int block_type)
 {
+    //determines the shininess of a block; this value is used for specularity
     float shiny;
     switch(block_type)
     {
         case WATER:
-            //for right now it's just one texture instead of an animated thing
             shiny = shininess_WATER;
             return shiny;
             break;
@@ -346,7 +353,6 @@ int BlockList::BlockShininess(int block_type)
             return shiny;
             break;
         case LAVA:
-            //for right now it's just one texture instead of an animated thing
             shiny = shininess_LAVA;
             return shiny;
             break;
@@ -400,6 +406,8 @@ int BlockList::BlockShininess(int block_type)
 
 bool BlockList::OriginalChunkCreationHelper(int min_x, int max_x, int min_y, int max_y, int min_z, int max_z)
 {
+    //in a particular chunk, check if there are any blocks in it, if there are then start
+    //storing data to be passed into the VBO of that chunk
     bool flag_local = false;
     for(float i=min_x; i<=max_x ;i++)
     {
@@ -432,6 +440,10 @@ bool BlockList::OriginalChunkCreationHelper(int min_x, int max_x, int min_y, int
 
                     float shininess = BlockShininess(Block_type);
                     int flag_texture_animate = AnimateTexture(Block_type);
+
+                    //we add only those faces of the block that are
+                    //visible and thus only draw the hull of the terrain
+                    //This is why we use the TestFaceForDrawing Function
 
                     //Front Face
                     if(TestFaceForDrawing('f', i, j, k))
@@ -569,6 +581,7 @@ bool BlockList::OriginalChunkCreationHelper(int min_x, int max_x, int min_y, int
 
 bool BlockList::RecreatingChunkHelper(int min_x, int max_x, int min_y, int max_y, int min_z, int max_z)
 {
+    //similar to OriginalChunkHelper function except it operates on existing chunks and therefore existing VBOs
     bool flag_local = false;
     for(float i=min_x; i<max_x ;i++)
     {
@@ -719,6 +732,8 @@ bool BlockList::RecreatingChunkHelper(int min_x, int max_x, int min_y, int max_y
 
 int BlockList::replacefacetexture(int x, int y , int z, int OldBlockType)
 {
+    //if for some reason we want to selectively change the type of some blocks in the terrain
+    //we can use this function
     switch(OldBlockType)
     {
     //so far the only case is for grass becoming dirt
@@ -743,6 +758,7 @@ int BlockList::replacefacetexture(int x, int y , int z, int OldBlockType)
 
 int BlockList::AnimateTexture(int block_type)
 {
+    //sets a flag to determine whether or not a texture will be animated.
     switch(block_type)
     {
         case WATER:
@@ -794,6 +810,11 @@ int BlockList::AnimateTexture(int block_type)
 
 bool BlockList::TestFaceForDrawing(char c, int x, int y, int z)
 {
+    //Since we are only drawing the hull of the terrain we only
+    //want to draw a face on a block if it is visible
+
+    //This check is carried out by simply checking if another block
+    //exists that would obscure the face in question
     bool ret = false;
     switch(c)
     {
@@ -876,6 +897,8 @@ void BlockList::CreateFaceInOrder(char c, glm::vec4 pos1, glm::vec4 pos2, glm::v
                                   glm::vec2 uv1, glm::vec2 uv2, glm::vec2 uv3, glm::vec2 uv4, float shiny,
                                   int flag_animation)
 {  
+    //This function simple populates the VertexList in the correct order,
+    //which is then used to populate the VBO
     glm::vec4 dirtBrown = glm::vec4(0.545098f, 0.270588f, 0.0745098f, 1.0f);
     glm::vec4 grassyGreen = glm::vec4(0.180392f, 0.545098f, 0.341176f, 1.0f);
     glm::vec4 fadeToBlack = glm::vec4(0.662745f, 0.662745f, 0.662745f, 1.0f);
@@ -980,6 +1003,7 @@ void BlockList::CreateFaceInOrder(char c, glm::vec4 pos1, glm::vec4 pos2, glm::v
 
 void BlockList::CreateIndexListForFace(int face_count)
 {
+    //populate IndexList which then populates the VBO index
     IndexList.push_back(face_count*4);
     IndexList.push_back(face_count*4+1);
     IndexList.push_back(face_count*4+2);
@@ -993,7 +1017,7 @@ GLenum BlockList::drawMode()
     return GL_TRIANGLES;
 }
 
-//Getter
+//Getters
 std::map<std::tuple<int, int, int>, int> BlockList::getBlockMap()
 {
     return BlockMap;
@@ -1014,7 +1038,7 @@ int BlockList::getChunkID(std::tuple<int, int, int> chunk_pos)
     return ChunkMap[chunk_pos];
 }
 
-//Setter
+//Setters
 void BlockList::AddChunk(std::tuple<int, int, int> chunk_pos)
 {
     int chunk_id = ChunkMap.size();
@@ -1035,10 +1059,4 @@ void BlockList::AddBlock(std::tuple<int, int, int> block_pos, int block_enum_typ
 void BlockList::DeleteBlock(std::tuple<int, int, int> block_pos)
 {
     BlockMap.erase(block_pos);
-//    std::map<std::tuple<int, int, int>, int>::iterator it = BlockMap.find(block_pos);
-//    if (it== BlockMap.end()) {
-//        std::cout << "it's gone" << std::endl;
-//    } else {
-//        std::cout << " :( " << std::endl;
-//    }
 }

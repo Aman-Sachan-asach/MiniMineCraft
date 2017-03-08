@@ -31,40 +31,6 @@ int Drawable::elemCount()
     return count;
 }
 
-//////////////////////////////////////////////////////////////////////////////
-
-void Drawable::generateChunkVBO()
-{
-    ChunkBound = true;
-    // Create a VBO on our GPU and store its handle in bufPos
-    context->glGenBuffers(1, &bufChunk);
-}
-
-void Drawable::generateChunkVBOIndex()
-{
-    ChunkIdxBound = true;
-    // Create a VBO on our GPU and store its handle in bufIdx
-    context->glGenBuffers(1, &bufChunkIdx);
-}
-
-bool Drawable::BindChunkVBO()
-{
-    if(ChunkBound) {
-        context->glBindBuffer(GL_ARRAY_BUFFER, bufChunk);
-    }
-    return ChunkBound;
-}
-
-bool Drawable::BindChunkVBOIndex()
-{
-    if(ChunkIdxBound) {
-        context->glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufChunkIdx);
-    }
-    return ChunkIdxBound;
-}
-
-//////////////////////////////////////////////////////////////////////////////
-
 void Drawable::generateGeneralVBOs(int IndexVBO_size)
 {
     General_VBOBound = true;
@@ -90,6 +56,12 @@ void Drawable::generateNewVBO(GLuint index)
     context->glGenBuffers(1, &VBOList[index]);
 }
 
+void Drawable::generateNewVBOIndex(int index)
+{
+    VBOIndexList.push_back((GLuint) index);
+    context->glGenBuffers(1, &VBOIndexList[index]);
+}
+
 void Drawable::RegenerateNewUVs(GLuint index)
 {
     UVBound[index] = true;
@@ -105,6 +77,12 @@ void Drawable::RegenerateNewVBO(GLuint index)
     // Create a VBO on our GPU and store its handle in VBOList[index]
     VBOList[index] = (GLuint)index;
     context->glGenBuffers(1, &VBOList[index]);
+}
+
+void Drawable::RegenerateNewVBOIndex(int index)
+{
+    VBOIndexList[index] = (GLuint)index;
+    context->glGenBuffers(1, &VBOIndexList[index]);
 }
 
 void Drawable::DeleteUVsHandle(GLuint index)
@@ -124,25 +102,35 @@ void Drawable::DeleteVBOHandle(GLuint index)
     context->glDeleteBuffers(1, &VBOList[index]);
 }
 
-void Drawable::generateNewVBOIndex(int index)
-{
-    VBOIndexList.push_back((GLuint) index);
-    context->glGenBuffers(1, &VBOIndexList[index]);
-}
-
-void Drawable::RegenerateNewVBOIndex(int index)
-{
-    VBOIndexList[index] = (GLuint)index;
-    context->glGenBuffers(1, &VBOIndexList[index]);
-}
-
 void Drawable::DeleteVBOIndex(int index)
 {
     VBOIndexList[index] = -99;
     context->glDeleteBuffers(1, &VBOIndexList[index]);
 }
 
-//////////////////////////////////////////////////////////////////////////////
+bool Drawable::bindGeneralVBO()
+{
+    if(General_VBOBound)
+    {
+        context->glBindBuffer(GL_ARRAY_BUFFER, VBO_handle);
+        context->glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexVBO_handle);
+    }
+    return General_VBOBound;
+}
+
+bool Drawable::bindVBO(int index)
+{
+    if(VBOBound[index]) {
+        context->glBindBuffer(GL_ARRAY_BUFFER, VBOList[index]);
+        context->glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOIndexList[index]);
+    }
+    return VBOBound[index];
+}
+
+//------------- The non-interleaved VBO setup;
+//used for simple geometry like crosshairs, and the player (just a long cube),etc ------------
+
+//Function calls that deal with creating handles for buffers
 
 void Drawable::generateIdx()
 {
@@ -172,28 +160,7 @@ void Drawable::generateCol()
     context->glGenBuffers(1, &bufCol);
 }
 
-//////////////////////////////////////////////////////////////////////////////
-
-bool Drawable::bindGeneralVBO()
-{
-    if(General_VBOBound)
-    {
-        context->glBindBuffer(GL_ARRAY_BUFFER, VBO_handle);
-        context->glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexVBO_handle);
-    }
-    return General_VBOBound;
-}
-
-bool Drawable::bindVBO(int index)
-{
-    if(VBOBound[index]) {
-        context->glBindBuffer(GL_ARRAY_BUFFER, VBOList[index]);
-        context->glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOIndexList[index]);
-    }
-    return VBOBound[index];
-}
-
-//////////////////////////////////////////////////////////////////////////////
+//Function calls that deal with binding buffers
 
 bool Drawable::bindIdx()
 {
@@ -226,3 +193,5 @@ bool Drawable::bindCol()
     }
     return colBound;
 }
+
+//-------------------------------------------------------------------------------------

@@ -23,7 +23,7 @@ glm::vec4 GetPlayerNormal(const glm::vec4& P)
 void createPlayerVertexPositions(glm::vec4 (&player_vert_pos)[PLAYER_VERT_COUNT])
 {
     int idx = 0;
-    ///////             Top Cube                ///////
+    ///////             Long Cube                ///////
     //Front face
     //UR
     player_vert_pos[idx++] = glm::vec4(0.5f, 1.f, 0.5f, 1.0f);
@@ -83,73 +83,12 @@ void createPlayerVertexPositions(glm::vec4 (&player_vert_pos)[PLAYER_VERT_COUNT]
     player_vert_pos[idx++] = glm::vec4(-0.5f, -1.f, -0.5f, 1.0f);
     //UL
     player_vert_pos[idx++] = glm::vec4(-0.5f, -1.f, 0.5f, 1.0f);
-
-    ///////             Bottom Cube                ///////
-//    //Front face
-//    //UR
-//    player_vert_pos[idx++] = glm::vec4(0.5f, 1.f, 0.5f, 1.0f);
-//    //LR
-//    player_vert_pos[idx++] = glm::vec4(0.5f, -1.f, 0.5f, 1.0f);
-//    //LL
-//    player_vert_pos[idx++] = glm::vec4(-0.5f, -1.f, 0.5f, 1.0f);
-//    //UL
-//    player_vert_pos[idx++] = glm::vec4(-0.5f, 1.f, 0.5f, 1.0f);
-
-//    //Right face
-//    //UR
-//    player_vert_pos[idx++] = glm::vec4(0.5f, 1.f, -0.5f, 1.0f);
-//    //LR
-//    player_vert_pos[idx++] = glm::vec4(0.5f, -1.f, -0.5f, 1.0f);
-//    //LL
-//    player_vert_pos[idx++] = glm::vec4(0.5f, -1.f, 0.5f, 1.0f);
-//    //UL
-//    player_vert_pos[idx++] = glm::vec4(0.5f, 1.f, 0.5f, 1.0f);
-
-//    //Left face
-//    //UR
-//    player_vert_pos[idx++] = glm::vec4(-0.5f, 1.f, 0.5f, 1.0f);
-//    //LR
-//    player_vert_pos[idx++] = glm::vec4(-0.5f, -1.f, 0.5f, 1.0f);
-//    //LL
-//    player_vert_pos[idx++] = glm::vec4(-0.5f, -1.f, -0.5f, 1.0f);
-//    //UL
-//    player_vert_pos[idx++] = glm::vec4(-0.5f, 1.f, -0.5f, 1.0f);
-
-//    //Back face
-//    //UR
-//    player_vert_pos[idx++] = glm::vec4(-0.5f, 1.f, -0.5f, 1.0f);
-//    //LR
-//    player_vert_pos[idx++] = glm::vec4(-0.5f, -1.f, -0.5f, 1.0f);
-//    //LL
-//    player_vert_pos[idx++] = glm::vec4(0.5f, -1.f, -0.5f, 1.0f);
-//    //UL
-//    player_vert_pos[idx++] = glm::vec4(0.5f, 1.f, -0.5f, 1.0f);
-
-//    //Top face
-//    //UR
-//    player_vert_pos[idx++] = glm::vec4(0.5f, 1.f, -0.5f, 1.0f);
-//    //LR
-//    player_vert_pos[idx++] = glm::vec4(0.5f, 1.f, 0.5f, 1.0f);
-//    //LL
-//    player_vert_pos[idx++] = glm::vec4(-0.5f, 1.f, 0.5f, 1.0f);
-//    //UL
-//    player_vert_pos[idx++] = glm::vec4(-0.5f, 1.f, -0.5f, 1.0f);
-
-//    //Bottom face
-//    //UR
-//    player_vert_pos[idx++] = glm::vec4(0.5f, -1.f, 0.5f, 1.0f);
-//    //LR
-//    player_vert_pos[idx++] = glm::vec4(0.5f, -1.f, -0.5f, 1.0f);
-//    //LL
-//    player_vert_pos[idx++] = glm::vec4(-0.5f, -1.f, -0.5f, 1.0f);
-//    //UL
-//    player_vert_pos[idx++] = glm::vec4(-0.5f, -1.f, 0.5f, 1.0f);
 }
 
 void createPlayerVertexNormals(glm::vec4 (&player_vert_nor)[PLAYER_VERT_COUNT])
 {
     int idx = 0;
-    ///////             Top Cube                ///////
+    ///////             Long Cube                ///////
     //Front
     for(int i = 0; i < 4; i++){
         player_vert_nor[idx++] = glm::vec4(0,0,1,0);
@@ -174,32 +113,6 @@ void createPlayerVertexNormals(glm::vec4 (&player_vert_nor)[PLAYER_VERT_COUNT])
     for(int i = 0; i < 4; i++){
         player_vert_nor[idx++] = glm::vec4(0,-1,0,0);
     }
-
-    ///////             Bottom Cube                ///////
-//    //Front
-//    for(int i = 0; i < 4; i++){
-//        player_vert_nor[idx++] = glm::vec4(0,0,1,0);
-//    }
-//    //Right
-//    for(int i = 0; i < 4; i++){
-//        player_vert_nor[idx++] = glm::vec4(1,0,0,0);
-//    }
-//    //Left
-//    for(int i = 0; i < 4; i++){
-//        player_vert_nor[idx++] = glm::vec4(-1,0,0,0);
-//    }
-//    //Back
-//    for(int i = 0; i < 4; i++){
-//        player_vert_nor[idx++] = glm::vec4(0,0,-1,0);
-//    }
-//    //Top
-//    for(int i = 0; i < 4; i++){
-//        player_vert_nor[idx++] = glm::vec4(0,1,0,0);
-//    }
-//    //Bottom
-//    for(int i = 0; i < 4; i++){
-//        player_vert_nor[idx++] = glm::vec4(0,-1,0,0);
-//    }
 }
 
 void createPlayerIndices(GLuint (&player_idx)[PLAYER_IDX_COUNT])

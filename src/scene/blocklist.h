@@ -40,6 +40,13 @@ public:
                     BRICK = 12, CLOUD = 13};
 
 public:
+    Scene* scene;
+    QLabel myLabel;
+
+    std::vector<vertex_data> VertexList;
+    std::vector<GLuint> IndexList;
+    std::vector<glm::vec2> UVList;
+
     std::map<std::tuple<int, int, int>, int> BlockMap; //Maps a position (stored as a std::tuple)
                                                        // to a enum type
     std::map<std::tuple<int, int, int>, int> ChunkMap; //Maps position (position units are in
@@ -49,18 +56,8 @@ public:
     int ChunkID;
     glm::vec3 PlayerPosition = glm::vec3(0.0f, 0.0f ,0.0f);
     glm::vec3 OldPlayerPosition = glm::vec3(0.0f, 0.0f ,0.0f);
-    std::vector<int> WorldBoundary; //x_max, x_min, y_max, y_min, z_max, z_min
-
-    std::vector<bool> ChunkModified;
-
-    std::vector<vertex_data> VertexList;
-    std::vector<GLuint> IndexList;
-
-    std::vector<glm::vec2> UVList;
-
-    Scene* scene;
-
-    QLabel myLabel;
+    std::vector<int> WorldBoundary; //A vector storing the x_max, x_min, y_max,
+                                    //y_min, z_max, and z_min of the world
 
     //ALl the UV co-ordinates for the starting bottom left of a block in the texture atlas, listed row wise
     float UVoffset = 0.1 * (1.0f/16.0f);
@@ -149,14 +146,14 @@ public:
                            int flag_animation);
     bool TestFaceForDrawing(char c, int x, int y, int z);
 
-    //Getter
+    //Getters
     std::map<std::tuple<int, int, int>, int> getBlockMap();
     int getBlockType(std::tuple<int, int, int> block_pos);
     int getChunkID(std::tuple<int, int, int> chunk_pos);
 
     void setBlockType(int type, std::tuple<int, int, int> block_pos);
 
-    //Setter
+    //Setters
     void AddBlock(std::tuple<int, int, int> block_pos, int block_enum_type);
     void AddChunk(std::tuple<int, int, int> chunk_pos); //adds a chunk to chunkmap and then gives the chunk an id
     void DeleteBlock(std::tuple<int, int, int> block_pos);

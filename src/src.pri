@@ -12,7 +12,6 @@ SOURCES += \
     $$PWD/drawable.cpp \
     $$PWD/camera.cpp \
     $$PWD/cameracontrolshelp.cpp \
-    $$PWD/scene/cube.cpp \
     $$PWD/scene/scene.cpp \
     $$PWD/scene/transform.cpp \
     $$PWD/scene/crosshair.cpp \
@@ -21,9 +20,7 @@ SOURCES += \
     $$PWD/scene/player.cpp \
     $$PWD/scene/compass.cpp \
     $$PWD/behaviors.cpp \
-    $$PWD/scene/skybox.cpp \
-    $$PWD/scene/weather.cpp \
-    $$PWD/scene/chunk.cpp
+    $$PWD/scene/weather.cpp
 
 HEADERS += \
     $$PWD/la.h \
@@ -35,7 +32,6 @@ HEADERS += \
     $$PWD/drawable.h \
     $$PWD/camera.h \
     $$PWD/cameracontrolshelp.h \
-    $$PWD/scene/cube.h \
     $$PWD/scene/scene.h \
     $$PWD/scene/transform.h \
     $$PWD/scene/crosshair.h \
@@ -44,6 +40,4 @@ HEADERS += \
     $$PWD/scene/player.h \
     $$PWD/scene/compass.h \
     $$PWD/behaviors.h \
-    $$PWD/scene/skybox.h \
-    $$PWD/scene/weather.h \
-    $$PWD/scene/chunk.h
+    $$PWD/scene/weather.h

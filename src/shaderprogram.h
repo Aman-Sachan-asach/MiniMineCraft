@@ -7,7 +7,6 @@
 #include "drawable.h"
 #include "scene/blocklist.h"
 #include "scene/weather.h"
-#include "scene/chunk.h"
 #include "soil/Simple OpenGL Image Library/src/SOIL.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,6 +15,7 @@
 class ShaderProgram
 {
 public:
+    //A bunch of handles for the actual shader
     GLuint vertShader;    // A handle for the vertex shader stored in this shader program
     GLuint fragShader;    // A handle for the fragment shader stored in this shader program
     GLuint prog;          // A handle for the linked shader program stored in this class
@@ -28,6 +28,12 @@ public:
     int attrPos; // A handle for the "in" vec4 representing vertex position in the vertex shader
     int attrNor; // A handle for the "in" vec4 representing vertex normal in the vertex shader
     int attrCol; // A handle for the "in" vec4 representing vertex color in the vertex shader
+    int attrUVs; // A handle for the "in" vec4 representing vertex color in the vertex shader
+    int attrtangent; // A handle for the "in" vec4 representing block face's tangent vector in the vertex shader
+    int attrbitangent; // A handle for the "in" vec4 representing block face's bi-tangent vector in the vertex shader
+    int attrshininess; // A handle for the "in" vec4 representing block's specularity in the vertex shader
+    int attranimatetexture_flag; // A handle for the "in" vec4 representing the flag that determines
+                                //if the texture is animated or not in the vertex shader
 
     int unifModel; // A handle for the "uniform" mat4 representing model matrix in the vertex shader
     int unifModelInvTr; // A handle for the "uniform" mat4 representing inverse transpose of the model matrix in the vertex shader
@@ -35,22 +41,17 @@ public:
     int unifColor; // A handle for the "uniform" vec4 representing color of geometry in the vertex shader
     int unifCameraEye; // A handle for the "uniform" vec4 representing the position of the eye of the camera
 
-    int attrUVs;
-    int attrtangent;
-    int attrbitangent;
-    int attrshininess;
-    int attranimatetexture_flag;
-
+    //Texture sampling handles
     int unifTextureSampler;
     int unifNormalSampler;
     int unifSnowSampler;
     int unifRainSampler;
 
-    int unifTimeCount;
-    int unifHeight;
-    int unifLIntensity;
-    int unifLColor;
-    int unifLDirection;
+    int unifTimeCount; //handle for time vaiable
+    int unifHeight; //handle for the weather billboard height
+    int unifLIntensity; //handle for light intensity
+    int unifLColor; //handle for light color
+    int unifLDirection; //handle for light direction
 
     unsigned char *image;
 

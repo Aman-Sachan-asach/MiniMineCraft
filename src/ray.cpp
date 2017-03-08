@@ -58,11 +58,6 @@ bool Ray::RayMarch(BlockList &blocklist, std::tuple<int, int, int> &block)
                 continue;
             }
 
-//            std::cout << "Comparing" << std::endl;
-//            std::cout << "Ray: " << x << " | " << y << " | " << z << std::endl;
-//            std::cout << "Block: " << std::get<0>(pos.first) << " | " << round(std::get<1>(pos.first)) << " | " << std::get<2>(pos.first) << std::endl;
-//            std::cout << "--------" << std::endl;
-
             // made it here then a block was found
             // set the block to the positions in the map
             // return to mygl to remove
@@ -106,17 +101,9 @@ bool Ray::RayMarchAdd(BlockList &blocklist, std::tuple<int, int, int> &block)
 
                     // see if it exists in the blocklist
                     if(blocklist.getBlockMap().find(block) == blocklist.getBlockMap().end()) {
-
-                        // remove the block from the world
-                        //blocklist.removeBlock(block);
-
-                        //removed = true;
-
                         return true;
                     }
                     else {
-                        std::cout << "put a block here" << std::endl;
-
                         return false;
                     }
                 }
@@ -126,41 +113,5 @@ bool Ray::RayMarchAdd(BlockList &blocklist, std::tuple<int, int, int> &block)
         x = ceil(ray_point.x);
         y = ceil(ray_point.y);
         z = ceil(ray_point.z);
-    }
-
-    //std::cout << "adding this block" << std::endl;
-}
-
-
-
-/// delete this function
-bool Ray::Collides(BlockList &blocklist)
-{
-    float x = this->origin.x;//std::get<0>(pos.first);
-    float y = this->origin.y;//std::get<1>(pos.first);
-    float z = this->origin.z;//std::get<2>(pos.first);
-
-    for(auto p : blocklist.getBlockMap()) {
-        // not all too responsive
-        // will fix
-        if(x == std::get<0>(p.first)) {
-            if(y == floor(std::get<2>(p.first))) {
-                if(z == std::get<1>(p.first)) {
-
-                    // remove block
-                    //std::map<std::tuple<int, int, int>, int> map = scene.blockslist.getBlockmap();
-                    std::map<std::tuple<int, int, int>, int>::iterator it;
-                    std::tuple<int, int, int> block = std::make_tuple(std::get<0>(p.first), std::get<1>(p.first), std::get<2>(p.first));
-
-                    it = blocklist.getBlockMap().find(block);
-
-                    // see if it exists in the blocklist
-                    if(blocklist.getBlockMap().find(block) != blocklist.getBlockMap().end()) {
-                        std::cout << "collision" << std::endl;
-                        // translate = false;
-                    }
-                }
-            }
-        }
     }
 }
